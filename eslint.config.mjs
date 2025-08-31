@@ -18,7 +18,14 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "lib/generated/prisma/**"
     ],
+    // rules: {
+    //   "@typescript-eslint/no-empty-object-type": "off",
+
+    //   // DELETE THIS LATER
+    //   // "@typescript-eslint/no-explicit-any": "off", // Allow any TypeScript type
+    // },
   },
 ];
 

@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Ecom Store — Next.js E‑commerce Starter
 
-## Getting Started
+A minimal e-commerce starter built with Next.js 15, React 19, TypeScript, Tailwind CSS 4, and Prisma (PostgreSQL via Neon serverless). Includes product listing, product details with gallery, featured banners, dark mode, and a small component set based on Radix UI.
 
-First, run the development server:
+### Stack
+
+-   Next.js 15, React 19, TypeScript
+-   Tailwind CSS 4, Radix UI primitives, Lucide icons
+-   Prisma 6 with Neon serverless Postgres (WebSocket adapter)
+
+## Quick start
+
+1. Clone and install
+
+```bash
+git clone <your-fork-or-repo-url>
+cd ecomStore
+npm install
+```
+
+2. Environment variables
+
+Create `.env.local` with your database URL (see `.env.example`):
+
+```env
+DATABASE_URL="postgresql://<user>:<password>@<host>/<db>?sslmode=require"
+```
+
+Neon users: copy the connection string from the Neon console; keep `sslmode=require`.
+
+3. Database
+
+Apply migrations and generate the Prisma client (postinstall runs `prisma generate`).
+
+```bash
+npx prisma migrate dev
+```
+
+Optional: open Prisma Studio to inspect data.
+
+```bash
+npx prisma studio
+```
+
+4. Seed sample data (products)
+
+```bash
+npx tsx db/seed.ts
+```
+
+This uses the local seed script in `db/seed.ts` and the Prisma client generated to `lib/generated/prisma`.
+
+5. Run the app
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and start production server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+-   `npm run dev` — start Next.js in development
+-   `npm run build` — production build
+-   `npm start` — start production server
+-   `npm run lint` — run ESLint
+-   `postinstall` — `prisma generate` (auto-generated client to `lib/generated/prisma`)
 
-To learn more about Next.js, take a look at the following resources:
+## Project layout (high level)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   `app/` — App Router pages (home, product details), shared layouts
+-   `components/` — UI primitives and feature components (header, product list/card)
+-   `db/` — Prisma client wrapper and seed utilities
+-   `lib/` — utilities, server actions, constants, Prisma client output
+-   `prisma/` — Prisma schema and migrations
+-   `public/` — static assets and sample images
+-   `types/` — shared TypeScript types
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Data model
 
-## Deploy on Vercel
+Single `Product` model with fields like `name`, `slug`, `images[]`, `description`, `brand`, `stock`, `price`, `rating`, `numReviews`, `isFeatured`, `banner`, and timestamps. See `prisma/schema.prisma` for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   Node.js 18.18+ or 20+ recommended
+-   One PostgreSQL database (Neon recommended). The project is configured to use Neon WebSockets via `@prisma/adapter-neon` and `ws`.
+
+## Troubleshooting
+
+-   Prisma client not found or type errors: run `npx prisma generate`.
+-   Cannot connect to DB: verify `DATABASE_URL` and that `sslmode=require` is present for Neon.
+-   Seeding fails about TypeScript: `npx tsx db/seed.ts` installs a one-off TS runner; ensure internet access for `npx`.
+
+## License
+
+Copyright © 2025 Rythem7. All rights reserved.
