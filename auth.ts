@@ -18,10 +18,9 @@ export const config: NextAuthConfig = {
 		CredentialsProvider({
 			credentials: {
 				email: {
-					label: "Email",
 					type: "email",
 				},
-				password: { label: "Password", type: "password" },
+				password: { type: "password" },
 			},
 			async authorize(credentials) {
 				if (credentials == null) return null;
