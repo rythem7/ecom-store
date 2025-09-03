@@ -20,12 +20,12 @@ const eslintConfig = [
       "next-env.d.ts",
       "lib/generated/prisma/**"
     ],
-    // rules: {
-    //   "@typescript-eslint/no-empty-object-type": "off",
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "off",
 
-    //   // DELETE THIS LATER
-    //   // "@typescript-eslint/no-explicit-any": "off", // Allow any TypeScript type
-    // },
+      // DELETE THIS LATER
+      "@typescript-eslint/no-explicit-any": "off", // Allow any TypeScript type
+    },
   },
 ];
 

@@ -18,6 +18,7 @@ const LoadingPage = () => {
 				height={150}
 				width={150}
 				alt="Loading..."
+				unoptimized
 			/>
 		</div>
 	);
