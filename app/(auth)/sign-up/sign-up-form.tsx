@@ -17,7 +17,7 @@ const SignUpForm = () => {
 	});
 
 	const searchParams = useSearchParams();
-	const callbackUrl = searchParams.get("callbackUrl") || "/";
+	const callbackUrl = searchParams.get("callbackUrl") ?? "/";
 
 	const SignUpButton = () => {
 		const { pending } = useFormStatus();
@@ -38,7 +38,7 @@ const SignUpForm = () => {
 						id="name"
 						name="name"
 						type="text"
-						required
+						// required
 						autoComplete="name"
 						defaultValue={signUpDefaultValues.name}
 					/>
@@ -48,8 +48,9 @@ const SignUpForm = () => {
 					<Input
 						id="email"
 						name="email"
-						type="email"
-						required
+						type="text"
+						// type="email"
+						// required
 						autoComplete="email"
 						defaultValue={signUpDefaultValues.email}
 					/>

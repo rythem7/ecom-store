@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import NextAuth, { NextAuthConfig } from "next-auth";
+import { authConfig } from "./auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/db/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compareSync } from "bcrypt";
+import { cookies } from "next/headers";
 
 export const config: NextAuthConfig = {
 	pages: {
@@ -10,23 +14,21 @@ export const config: NextAuthConfig = {
 		error: "/sign-in",
 	},
 	session: {
-		strategy: "jwt",
+		strategy: "jwt" as const,
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 	},
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		CredentialsProvider({
 			credentials: {
-				email: {
-					type: "email",
-				},
+				email: { type: "email" },
 				password: { type: "password" },
 			},
 			async authorize(credentials) {
 				if (credentials == null) return null;
 
 				// Find user in database
-				const user = await prisma.user.findFirst({
+				const user = await prisma.user.findUnique({
 					where: {
 						email: credentials.email as string,
 					},
@@ -56,9 +58,30 @@ export const config: NextAuthConfig = {
 		}),
 	],
 	callbacks: {
+		...authConfig.callbacks,
+
+		async jwt({ token, user, trigger, session }: any) {
+			// Assign user fields to token
+			if (user) {
+				token.role = user.role;
+			}
+			if (user && user.name == "NO_NAME") {
+				token.name = user.email!.split("@")[0];
+
+				// Update database
+				await prisma.user.update({
+					where: { id: user.id },
+					data: { name: token.name },
+				});
+			}
+			return token;
+		},
+
 		async session({ session, user, trigger, token }: any) {
 			// Set the user ID from the token
 			session.user.id = token.sub;
+			session.user.role = token.role;
+			session.user.name = token.name;
 
 			// If there is an update, set the user name
 			if (trigger === "update") {

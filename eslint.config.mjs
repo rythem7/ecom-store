@@ -24,7 +24,7 @@ const eslintConfig = [
       "@typescript-eslint/no-empty-object-type": "off",
 
       // DELETE THIS LATER
-      "@typescript-eslint/no-explicit-any": "off", // Allow any TypeScript type
+      // "@typescript-eslint/no-explicit-any": "off", // Allow any TypeScript type
     },
   },
 ];
