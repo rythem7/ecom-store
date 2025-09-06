@@ -2,6 +2,7 @@
 import { convertToPlainObject } from "../utils";
 import { LATEST_PRODUCTS_LIMIT } from "../constants";
 import { prisma } from "@/db/prisma";
+import { Product } from "@/types";
 
 // Get latest products
 export async function getLatestProducts() {
@@ -10,7 +11,8 @@ export async function getLatestProducts() {
 		orderBy: { createdAt: "desc" },
 	});
 
-	return convertToPlainObject(data);
+	// Ensure the return type is Product[]
+	return convertToPlainObject(data) as Product[];
 }
 
 // Get a single product by slug
