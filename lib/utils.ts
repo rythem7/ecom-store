@@ -79,3 +79,20 @@ export function formatError<T>(error: T) {
 export function round2(value: number | string) {
 	return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
 }
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+	currency: "USD",
+	style: "currency",
+	minimumFractionDigits: 2,
+	maximumFractionDigits: 2,
+});
+
+// format currency using formatter above
+export function formatCurrency(amount: number | string | null) {
+	if (typeof amount === "number" || typeof amount === "string") {
+		const number = Number(amount);
+		return CURRENCY_FORMATTER.format(number);
+	} else {
+		return "NaN";
+	}
+}

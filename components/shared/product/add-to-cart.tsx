@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Loader } from "lucide-react";
+import { Plus, Minus, Loader, ArrowRight } from "lucide-react";
 import { CartItem } from "@/types";
 import { toast } from "sonner";
 import { removeItemFromCart, addItemToCart } from "@/lib/actions/cart.actions";
@@ -9,7 +9,13 @@ import { useRouter } from "next/navigation";
 import { Cart } from "@/types";
 import { useTransition } from "react";
 
-const AddToCartButton = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
+export default function ProductPageAddToCart({
+	item,
+	cart,
+}: {
+	item: CartItem;
+	cart?: Cart;
+}) {
 	const router = useRouter();
 
 	const [isPending, startTransition] = useTransition();
@@ -33,26 +39,6 @@ const AddToCartButton = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
 			return;
 		});
 	};
-
-	// const handleRemoveFromCart = async () => {
-	// 	startTransition(async () => {
-	// 		const res = await removeItemFromCart(item.productId);
-
-	// 		if (!res.success) {
-	// 			toast.error(res.message);
-	// 			return;
-	// 		}
-
-	// 		toast.success(res.message, {
-	// 			action: {
-	// 				label: "Go To Cart",
-	// 				onClick: () => router.push("/cart"),
-	// 			},
-	// 			duration: 3000,
-	// 		});
-	// 		return;
-	// 	});
-	// };
 
 	// Check if item exists in cart
 	const existingItem =
@@ -90,9 +76,7 @@ const AddToCartButton = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
 			Add To Cart
 		</Button>
 	);
-};
-
-export default AddToCartButton;
+}
 
 export function AddButton({ item }: { item: CartItem }) {
 	const [isPending, startTransition] = useTransition();
@@ -156,6 +140,30 @@ export function RemoveButton({ productId }: { productId: string }) {
 			) : (
 				<Minus className="w-4 h-4" />
 			)}
+		</Button>
+	);
+}
+
+export function GoToCheckout() {
+	const router = useRouter();
+	const [isPending, startTransition] = useTransition();
+
+	function handleClick() {
+		startTransition(() => router.push("/shipping-address"));
+	}
+
+	return (
+		<Button
+			className="w-full cursor-pointer"
+			onClick={handleClick}
+			disabled={isPending}
+		>
+			{isPending ? (
+				<Loader className="w-4 h-4 animate-spin" />
+			) : (
+				<ArrowRight className="h-4 w-4" />
+			)}{" "}
+			Go To Checkout
 		</Button>
 	);
 }

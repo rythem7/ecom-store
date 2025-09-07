@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/product-price";
 import ProductImages from "@/components/shared/product/product-images";
-import AddToCartButton from "@/components/shared/product/add-to-cart";
+import ProductPageAddToCart from "@/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { Cart } from "@/types";
 
@@ -35,7 +35,9 @@ const ProductDetailsPage = async ({
 							<p>
 								{product.brand} {product.category}
 							</p>
-							<h1 className="h3-bold">{product.name}</h1>
+							<h1 className="font-bold text-xl lg:text-2xl">
+								{product.name}
+							</h1>
 							<p>
 								{product.rating} of {product.numReviews} Reviews
 							</p>
@@ -76,8 +78,8 @@ const ProductDetailsPage = async ({
 									)}
 								</div>
 								{product.stock > 0 && (
-									<div className="flex-center">
-										<AddToCartButton
+									<div className="flex justify-center items-center">
+										<ProductPageAddToCart
 											cart={cart}
 											item={{
 												productId: product.id,

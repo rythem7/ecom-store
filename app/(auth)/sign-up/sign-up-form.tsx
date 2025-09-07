@@ -48,8 +48,8 @@ const SignUpForm = () => {
 					<Input
 						id="email"
 						name="email"
-						type="text"
-						// type="email"
+						// type="text"
+						type="email"
 						// required
 						autoComplete="email"
 						defaultValue={signUpDefaultValues.email}
@@ -87,7 +87,7 @@ const SignUpForm = () => {
 
 				<div className="text-sm text-center text-muted-foreground mt-3">
 					{"Already have an account? "}
-					<Link href={"/sign-in"} target="_self" className="link">
+					<Link href={"/sign-in"} target="_self">
 						Sign In
 					</Link>
 				</div>

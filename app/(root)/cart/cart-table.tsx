@@ -2,7 +2,7 @@
 
 import { Cart } from "@/types";
 import { useRouter } from "next/router";
-import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
+import { formatCurrency } from "@/lib/utils";
 import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,17 +14,21 @@ import {
 	TableRow,
 	TableCell,
 } from "@/components/ui/table";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CartItem } from "@/types";
 import {
 	AddButton,
 	RemoveButton,
+	GoToCheckout,
 } from "@/components/shared/product/add-to-cart";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
 	return (
 		<>
-			<h1 className="py-4 h2-bold">Shopping Cart</h1>
+			<h1 className="py-4 font-bold text-2xl lg:text-3xl">
+				Shopping Cart
+			</h1>
 			{!cart || cart.items.length === 0 ? (
 				<div>
 					Cart is empty. <Link href={"/"}>Go Shopping</Link>
@@ -63,18 +67,34 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
 												</span>
 											</Link>
 										</TableCell>
-										<TableCell className="flex-center gap-2">
+										<TableCell className="flex justify-center items-center gap-2">
 											<RemoveButton
 												productId={item.productId}
 											/>
 											<span>{item.qty}</span>
 											<AddButton item={item} />
 										</TableCell>
+										<TableCell className="text-right">
+											${item.price}
+										</TableCell>
 									</TableRow>
 								))}
 							</TableBody>
 						</Table>
 					</div>
+					<Card>
+						<CardContent className="p-4 gap-4">
+							<div className="pb-3 text-xl">
+								Subtotal (
+								{cart.items.reduce((a, c) => a + c.qty, 0)}):
+								<span className="font-bold">
+									{" "}
+									{formatCurrency(cart.itemsPrice)}
+								</span>
+							</div>
+							<GoToCheckout />
+						</CardContent>
+					</Card>
 				</div>
 			)}
 		</>
