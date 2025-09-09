@@ -6,6 +6,8 @@ import {
 	insertCartSchema,
 	cartItemSchema,
 	shippingAddressSchema,
+	insertOrderItemSchema,
+	insertOrderSchema,
 } from "@/lib/validators";
 
 /**
@@ -25,5 +27,18 @@ export type Product = z.infer<typeof insertProductSchema> & {
 };
 
 export type Cart = z.infer<typeof insertCartSchema>;
+export type GetCart = Cart & { id: string };
 export type CartItem = z.infer<typeof cartItemSchema>;
 export type ShippingAddress = z.infer<typeof shippingAddressSchema>;
+export type OrderItem = z.infer<typeof insertOrderItemSchema>;
+export type Order = z.infer<typeof insertOrderSchema> & {
+	id: string; // Unique order ID from the database
+	createdAt: Date; // Timestamp when order was created
+	isPaid: boolean; // Payment status of the order
+	paidAt: Date | null; // Timestamp when order was paid
+	isDelivered: boolean; // Delivery status of the order
+	deliveredAt: Date | null; // Timestamp when order was delivered
+	transactionId: string | null; // Payment transaction
+	orderitems: OrderItem[]; // List of items in the order
+	user: { name: string; email: string }; // User who placed the order
+};

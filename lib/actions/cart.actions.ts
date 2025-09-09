@@ -1,6 +1,6 @@
 "use server";
 
-import { CartItem } from "@/types";
+import { CartItem, GetCart } from "@/types";
 import { cookies } from "next/headers";
 import { convertToPlainObject, formatError, round2 } from "../utils";
 import { auth } from "@/auth";
@@ -38,12 +38,7 @@ export async function addItemToCart(data: CartItem) {
 			: undefined;
 
 		// Get cart
-		const cart = (await getMyCart()) as
-			| {
-					id: string;
-					items: CartItem[];
-			  }
-			| undefined;
+		const cart = (await getMyCart()) as GetCart | null;
 
 		// Parse and validate item
 		const item = cartItemSchema.parse(data);
@@ -162,12 +157,7 @@ export async function removeItemFromCart(productId: string) {
 		if (!product) throw new Error("Product Not Found");
 
 		// Get user cart
-		const cart = (await getMyCart()) as
-			| {
-					id: string;
-					items: CartItem[];
-			  }
-			| undefined;
+		const cart = (await getMyCart()) as GetCart | null;
 		if (!cart) throw new Error("Cart Not Found");
 
 		// Check for item
