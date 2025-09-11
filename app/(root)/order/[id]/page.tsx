@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 import { getOrderById } from "@/lib/actions/order.actions";
 import { notFound } from "next/navigation";
-import { formatId } from "@/lib/utils";
 import OrderDetailsTable from "./order-details-table";
-import { Order } from "@/types";
+import { Order, ShippingAddress } from "@/types";
 
 export const metadata: Metadata = {
 	title: "Order Details",
@@ -23,8 +22,13 @@ const OrderDetailsPage = async ({
 	return (
 		<div>
 			<h1>Order Details</h1>
-			<p>Order ID: {formatId(id)}</p>
-			<OrderDetailsTable order={order} />
+			<OrderDetailsTable
+				order={{
+					...order,
+					shippingAddress: order.shippingAddress as ShippingAddress,
+				}}
+				paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+			/>
 		</div>
 	);
 };
