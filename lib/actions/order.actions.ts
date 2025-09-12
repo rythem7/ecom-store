@@ -11,6 +11,8 @@ import { revalidatePath } from "next/cache";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { PAGE_SIZE } from "../constants";
+import { Prisma } from "../generated/prisma";
+import { requireAdmin } from "../auth-guard";
 
 // Create order and the order items
 export async function createOrder() {
@@ -288,6 +290,80 @@ export async function getMyOrders({
 
 	return {
 		data: orders,
+		totalPages,
+	};
+}
+
+type SalesDataType = {
+	month: string;
+	totalSales: number;
+}[];
+// Get sales data and order summary
+export async function getSalesData() {
+	// Total sales amount
+	const totalSales = await prisma.order.aggregate({
+		_sum: { totalPrice: true },
+	});
+
+	// Total number of orders
+	const totalOrders = (await prisma.order.count()) as number;
+
+	// Total number of products
+	const totalProducts = (await prisma.product.count()) as number;
+
+	// Total number of users
+	const totalUsers = (await prisma.user.count()) as number;
+
+	// Sales data for the last 30 days
+	const monthlySales = await prisma.$queryRaw<
+		Array<{ month: string; totalSales: Prisma.Decimal }>
+	>`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')`;
+	//   ORDER BY "month" DESC`;
+
+	const salesData: SalesDataType = monthlySales.map((sale) => ({
+		month: sale.month,
+		totalSales: Number(sale.totalSales),
+	}));
+
+	const latestSales = await prisma.order.findMany({
+		orderBy: { createdAt: "desc" },
+		take: 6,
+		include: { user: { select: { name: true } } },
+	});
+
+	return {
+		totalSales: totalSales._sum?.totalPrice?.toString() || 0,
+		totalOrders,
+		totalProducts,
+		totalUsers,
+		salesData,
+		latestSales,
+	};
+}
+
+// Get all orders for admin
+export async function getAllOrders({
+	page,
+	limit = PAGE_SIZE,
+}: {
+	page: number;
+	limit?: number;
+}) {
+	await requireAdmin();
+
+	// Fetch orders with pagination
+	const data = await prisma.order.findMany({
+		skip: (page - 1) * limit,
+		take: limit,
+		orderBy: { createdAt: "desc" },
+		include: { user: { select: { name: true } }, orderitems: true },
+	});
+
+	const totalOrders = await prisma.order.count();
+	const totalPages = Math.ceil(totalOrders / limit);
+
+	return {
+		data,
 		totalPages,
 	};
 }

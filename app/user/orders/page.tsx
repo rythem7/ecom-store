@@ -84,7 +84,7 @@ const OrdersPage = async ({
 						))}
 					</TableBody>
 				</Table>
-				{totalPages >= 1 && (
+				{totalPages > 1 && (
 					<div className="mt-4 flex justify-end">
 						<Pagination
 							page={Number(page) || 1}
