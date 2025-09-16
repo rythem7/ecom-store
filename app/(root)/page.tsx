@@ -1,13 +1,24 @@
 import ProductList from "@/components/shared/product/product-list";
-import { getLatestProducts } from "@/lib/actions/product.actions";
+import ProductCarousel from "@/components/shared/product/product-carousel";
+import {
+	getLatestProducts,
+	getFeaturedProducts,
+} from "@/lib/actions/product.actions";
 
 const HomePage = async () => {
 	const latestProducts = await getLatestProducts();
+	const featuredProducts = await getFeaturedProducts();
 	return (
-		<ProductList
-			data={latestProducts}
-			title="Newest Arrivals"
-		></ProductList>
+		<>
+			{Array.isArray(featuredProducts) && featuredProducts.length > 0 && (
+				<ProductCarousel data={featuredProducts} />
+			)}
+			<ProductList
+				data={latestProducts}
+				title="Newest Arrivals"
+				limit={4}
+			/>
+		</>
 	);
 };
 

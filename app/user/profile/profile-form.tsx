@@ -3,7 +3,7 @@
 import { updateUserProfile } from "@/lib/actions/user.actions";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import { userProfileSchema } from "@/lib/validators";
+import { userProfileSchema, updateUserSchema } from "@/lib/validators";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-type ProfileType = z.infer<typeof userProfileSchema>;
+type ProfileType = z.infer<typeof updateUserSchema>;
 
 const ProfileForm = () => {
 	const { data: session, update } = useSession();
@@ -25,7 +25,7 @@ const ProfileForm = () => {
 	const userId = session?.user?.id;
 
 	const form = useForm<ProfileType>({
-		resolver: zodResolver(userProfileSchema),
+		resolver: zodResolver(updateUserSchema),
 		defaultValues: {
 			name: session?.user?.name ?? "",
 			email: session?.user?.email ?? "",

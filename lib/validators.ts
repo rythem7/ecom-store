@@ -18,9 +18,14 @@ export const insertProductSchema = z.object({
 	description: z.string().min(3, "Description must be atleast 3 characters"),
 	stock: z.coerce.number(),
 	images: z.array(z.string()).min(1, "Product must have atleast one image"),
-	isFeatured: z.boolean(),
+	isFeatured: z.boolean().optional(),
 	banner: z.string().nullable(),
 	price: currency,
+});
+
+// Schema for updating product
+export const updateProductSchema = insertProductSchema.extend({
+	id: z.string().min(1, "Product Id is required"),
 });
 
 export const signInFormSchema = z.object({
@@ -117,4 +122,10 @@ export const paymentResultSchema = z.object({
 export const userProfileSchema = z.object({
 	name: z.string().min(3, "Name must be atleast 3 characters"),
 	email: z.string().min(5, "Email must be atleast 5 characters"),
+});
+
+// Schema to update users (by admin)
+export const updateUserSchema = userProfileSchema.extend({
+	id: z.string().min(1, "User Id is required"),
+	role: z.string().min(1, "Role is required"),
 });

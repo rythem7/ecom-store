@@ -2,15 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { APP_NAME } from "@/lib/constants";
 import Menu from "./menu";
+import CategoryDrawer from "./category-drawer";
 
-const Header = () => {
+const Header = async () => {
 	return (
 		<header className="w-full border-b">
 			<div className="max-w-7xl lg:mx-auto p-5 md:px-10 w-full flex justify-between items-center">
 				<div className="flex justify-start items-center">
+					<CategoryDrawer />
 					<Link
 						href="/"
-						className="flex justify-start items-center gap-4"
+						className="flex justify-start items-center gap-4 ml-4"
 					>
 						<Image
 							src="/images/logo.svg"

@@ -345,14 +345,27 @@ export async function getSalesData() {
 export async function getAllOrders({
 	page,
 	limit = PAGE_SIZE,
+	query,
 }: {
 	page: number;
 	limit?: number;
+	query?: string;
 }) {
-	await requireAdmin();
+	const queryFilter: Prisma.OrderWhereInput =
+		query && query !== "all"
+			? {
+					user: {
+						name: {
+							contains: query,
+							mode: "insensitive",
+						} as Prisma.StringFilter,
+					},
+			  }
+			: {};
 
 	// Fetch orders with pagination
 	const data = await prisma.order.findMany({
+		where: { ...queryFilter },
 		skip: (page - 1) * limit,
 		take: limit,
 		orderBy: { createdAt: "desc" },
@@ -366,4 +379,57 @@ export async function getAllOrders({
 		data,
 		totalPages,
 	};
+}
+
+// Delete an order by ID
+export async function deleteOrderById(id: string) {
+	try {
+		await prisma.order.delete({
+			where: { id },
+		});
+
+		revalidatePath("/admin/orders");
+
+		return { success: true, message: "Order deleted successfully" };
+	} catch (error) {
+		if (isRedirectError(error)) throw error;
+		return { success: false, message: formatError(error) as string };
+	}
+}
+
+// Update COD order to paid
+export async function updateOrderToPaidCOD(orderId: string) {
+	try {
+		await updateOrderToPaid({ orderId });
+
+		revalidatePath(`/order/${orderId}`);
+		return { success: true, message: "Order marked as paid" };
+	} catch (error) {
+		return { success: false, message: formatError(error) };
+	}
+}
+
+// Update order to delivered
+export async function deliverOrder(orderId: string) {
+	try {
+		await requireAdmin();
+
+		const order = await prisma.order.findFirst({
+			where: { id: orderId },
+		});
+		if (!order) throw new Error("Order not found");
+		if (!order.isPaid) throw new Error("Order is not paid");
+		if (order.isDelivered) throw new Error("Order is already delivered");
+
+		await prisma.order.update({
+			where: { id: orderId },
+			data: { isDelivered: true, deliveredAt: new Date() },
+		});
+
+		revalidatePath(`/order/${orderId}`);
+		return { success: true, message: "Order marked as delivered" };
+	} catch (error) {
+		if (isRedirectError(error)) throw error;
+		return { success: false, message: formatError(error) };
+	}
 }

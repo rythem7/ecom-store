@@ -31,8 +31,8 @@ export function formatNumberWithDecimal(num: number): string {
 }
 
 // Format errors
-
-export function formatError<T>(error: T) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function formatError(error: any) {
 	if (error instanceof z.ZodError) {
 		// Handle Zod Error
 		const flattened = z.flattenError(error);

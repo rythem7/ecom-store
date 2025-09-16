@@ -8,7 +8,7 @@ const links = [
 	{ href: "/admin/overview", title: "Overview" },
 	{ href: "/admin/products", title: "Products" },
 	{ href: "/admin/orders", title: "Orders" },
-	{ href: "admin/users", title: "Users" },
+	{ href: "/admin/users", title: "Users" },
 ];
 
 const MainNav = ({
