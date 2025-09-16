@@ -47,43 +47,49 @@ const OverviewPage = async () => {
 					</CardContent>
 				</Card>
 				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Sales
-						</CardTitle>
-						<CreditCard />
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{Number(summary.totalOrders)}
-						</div>
-					</CardContent>
+					<Link href="/admin/orders">
+						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+							<CardTitle className="text-sm font-medium">
+								Sales
+							</CardTitle>
+							<CreditCard />
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">
+								{Number(summary.totalOrders)}
+							</div>
+						</CardContent>
+					</Link>
 				</Card>
 				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Customers
-						</CardTitle>
-						<Users />
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{summary.totalUsers}
-						</div>
-					</CardContent>
+					<Link href="/admin/users">
+						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+							<CardTitle className="text-sm font-medium">
+								Customers
+							</CardTitle>
+							<Users />
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">
+								{summary.totalUsers}
+							</div>
+						</CardContent>
+					</Link>
 				</Card>
 				<Card>
-					<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-						<CardTitle className="text-sm font-medium">
-							Products
-						</CardTitle>
-						<Barcode />
-					</CardHeader>
-					<CardContent>
-						<div className="text-2xl font-bold">
-							{summary.totalProducts}
-						</div>
-					</CardContent>
+					<Link href="/admin/products">
+						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+							<CardTitle className="text-sm font-medium">
+								Products
+							</CardTitle>
+							<Barcode />
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">
+								{summary.totalProducts}
+							</div>
+						</CardContent>
+					</Link>
 				</Card>
 			</div>
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">

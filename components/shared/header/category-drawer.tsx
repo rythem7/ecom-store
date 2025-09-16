@@ -21,7 +21,7 @@ const CategoryDrawer = async () => {
 						<MenuIcon />
 					</Button>
 				</DrawerTrigger>
-				<DrawerContent className="h-full max-w-sm">
+				<DrawerContent className="h-full max-w-2xs lg:max-w-sm">
 					<DrawerHeader>
 						<DrawerTitle>Select a category</DrawerTitle>
 						<div className="flex flex-col gap-1 mt-4">

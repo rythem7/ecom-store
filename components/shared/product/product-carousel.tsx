@@ -15,7 +15,7 @@ import Image from "next/image";
 const ProductCarousel = ({ data }: { data: Product[] }) => {
 	return (
 		<Carousel
-			className="w-full mb-12"
+			className="w-full mb-12 transform-gpu"
 			opts={{
 				loop: true,
 			}}
@@ -50,8 +50,8 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
 					</CarouselItem>
 				))}
 			</CarouselContent>
-			<CarouselPrevious />
-			<CarouselNext />
+			<CarouselPrevious className="absolute left-2 lg:left-[-50px] z-10 px-4 opacity-75 will-change-transform" />
+			<CarouselNext className="absolute right-2 lg:right-[-50px] z-10 px-4 opacity-75 will-change-transform" />
 		</Carousel>
 	);
 };
