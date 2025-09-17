@@ -6,6 +6,7 @@ import {
 import Link from "next/link";
 import { PRICE_RANGES, RATINGS, SORT_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import Pagination from "@/components/shared/pagination";
 
 export async function generateMetadata({
 	searchParams,
@@ -92,6 +93,7 @@ const SearchPage = async (props: {
 		category,
 		price,
 		rating,
+		limit: 6,
 		sort,
 		page: Number(page),
 	});
@@ -211,19 +213,21 @@ const SearchPage = async (props: {
 							</Button>
 						) : null}
 					</div>
-					<div className="max-w-sm">
-						Sort by:{" "}
-						{SORT_OPTIONS.map((s) => (
-							<Link
-								key={s.value}
-								href={getFilterUrl({ s: s.value })}
-								className={`mx-2 ${
-									s.value === sort && "font-bold"
-								}`}
-							>
-								{s.name}
-							</Link>
-						))}
+					<div className="max-w-md text-2xs mb-2 flex items-center gap-4">
+						<div className="font-bold">Sort by:</div>
+						<div className="grid grid-cols-2 gap-1">
+							{SORT_OPTIONS.map((s) => (
+								<Link
+									key={s.value}
+									href={getFilterUrl({ s: s.value })}
+									className={`${
+										s.value === sort && "font-bold"
+									}`}
+								>
+									{s.name}
+								</Link>
+							))}
+						</div>
 					</div>
 				</div>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -232,6 +236,9 @@ const SearchPage = async (props: {
 						<ProductCard key={product.id} product={product} />
 					))}
 				</div>
+				{products.totalPages > 1 && (
+					<Pagination page={page} totalPages={products.totalPages} />
+				)}
 			</div>
 		</div>
 	);

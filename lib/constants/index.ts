@@ -70,3 +70,9 @@ export const SORT_OPTIONS = [
 	{ name: "Price: High to Low", value: "highest" },
 	{ name: "Avg. Customer Review", value: "rating" },
 ];
+
+export const reviewDefaultValues = {
+	title: "",
+	comment: "",
+	rating: 0,
+};

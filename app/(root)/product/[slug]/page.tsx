@@ -7,6 +7,8 @@ import ProductImages from "@/components/shared/product/product-images";
 import ProductPageAddToCart from "@/components/shared/product/add-to-cart";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { Cart } from "@/types";
+import ReviewList from "./review-list";
+import { auth } from "@/auth";
 
 const ProductDetailsPage = async ({
 	params,
@@ -19,6 +21,9 @@ const ProductDetailsPage = async ({
 	if (!product) notFound();
 
 	const cart = (await getMyCart()) as Cart;
+
+	const session = await auth();
+	const userId = session?.user?.id || "";
 
 	return (
 		<>
@@ -96,6 +101,14 @@ const ProductDetailsPage = async ({
 						</Card>
 					</div>
 				</div>
+			</section>
+			<section className="mt-10">
+				<h2 className="font-bold text-2xl lg:text-3xl mb-4">Reviews</h2>
+				<ReviewList
+					userId={userId ?? ""}
+					productId={product.id ?? ""}
+					productSlug={product.slug ?? ""}
+				/>
 			</section>
 		</>
 	);

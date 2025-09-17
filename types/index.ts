@@ -9,6 +9,7 @@ import {
 	insertOrderItemSchema,
 	insertOrderSchema,
 	paymentResultSchema,
+	insertReviewSchema,
 } from "@/lib/validators";
 
 /**
@@ -45,3 +46,8 @@ export type Order = z.infer<typeof insertOrderSchema> & {
 };
 
 export type PaymentResult = z.infer<typeof paymentResultSchema>;
+export type ReviewType = z.infer<typeof insertReviewSchema> & {
+	id: string; // Unique review ID from the database
+	createdAt: Date; // Timestamp when review was created
+	user?: { name: string }; // User who wrote the review
+};

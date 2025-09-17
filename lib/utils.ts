@@ -80,8 +80,8 @@ export function round2(value: number | string) {
 	return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
 }
 
-const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
-	currency: "USD",
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-IN", {
+	currency: "INR",
 	style: "currency",
 	minimumFractionDigits: 2,
 	maximumFractionDigits: 2,
