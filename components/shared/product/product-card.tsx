@@ -8,18 +8,19 @@ import Link from "next/link";
 import Image from "next/image";
 import ProductPrice from "./product-price";
 import { Product } from "@/types";
+import Rating from "./rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
 	return (
-		<Card className="w-full max-w-sm">
-			<CardHeader className="p-0 items-center">
+		<Card className="w-full flex flex-col justify-between max-w-sm">
+			<CardHeader className="p-0 h-2/3 items-center">
 				<Link href={`/product/${product.slug}`}>
 					<Image
 						src={product.images[0]}
 						alt={product.name}
 						height={300}
 						width={300}
-						priority
+						className="w-full h-auto object-contain"
 					/>
 				</Link>
 			</CardHeader>
@@ -29,7 +30,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 					<h2 className="text-sm font-medium">{product.name}</h2>
 				</Link>
 				<div className="flex justify-between items-center gap-4">
-					<p>{product.rating} Stars</p>
+					<Rating value={Number(product.rating)} />
 					{product.stock > 0 ? (
 						<ProductPrice value={Number(product.price)} />
 					) : (

@@ -9,6 +9,7 @@ import { getMyCart } from "@/lib/actions/cart.actions";
 import { Cart } from "@/types";
 import ReviewList from "./review-list";
 import { auth } from "@/auth";
+import Rating from "@/components/shared/product/rating";
 
 const ProductDetailsPage = async ({
 	params,
@@ -43,13 +44,12 @@ const ProductDetailsPage = async ({
 							<h1 className="font-bold text-xl lg:text-2xl">
 								{product.name}
 							</h1>
-							<p>
-								{product.rating} of {product.numReviews} Reviews
-							</p>
+							<Rating value={Number(product.rating)} />
+							<p>{product.numReviews} Reviews</p>
 							<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 								<ProductPrice
 									value={Number(product.price)}
-									className="w-24 rounded-full bg-green-100 text-green-700 px-5 py-2"
+									className="rounded-full bg-green-100 text-green-700 px-5 py-2"
 								/>
 							</div>
 						</div>
@@ -62,7 +62,7 @@ const ProductDetailsPage = async ({
 					<div>
 						<Card>
 							<CardContent className="p-4">
-								<div className="mb-2 flex justify-between">
+								<div className="mb-2 flex justify-between gap-2">
 									<div>Price</div>
 									<div>
 										<ProductPrice

@@ -1,9 +1,7 @@
 "use client";
 
 import { Cart } from "@/types";
-import { useRouter } from "next/router";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,8 +13,7 @@ import {
 	TableCell,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CartItem } from "@/types";
+import { formatNumberToCurrency } from "@/lib/utils";
 import {
 	AddButton,
 	RemoveButton,
@@ -75,7 +72,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
 											<AddButton item={item} />
 										</TableCell>
 										<TableCell className="text-right">
-											${item.price}
+											{formatNumberToCurrency(item.price)}
 										</TableCell>
 									</TableRow>
 								))}

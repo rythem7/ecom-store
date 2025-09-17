@@ -12,16 +12,17 @@ const ProductImages = ({ images }: { images: string[] }) => {
 				src={images[current]}
 				height={1000}
 				width={1000}
+				loading="lazy"
 				alt="product image"
-				className="min-h-[300px] object-cover object-center"
+				className="w-full h-[400px] object-cover"
 			/>
-			<div className="flex">
+			<div className="flex flex-wrap gap-1">
 				{images.map((image, index) => (
 					<div
 						key={image}
 						onClick={() => setCurrent(index)}
 						className={cn(
-							"border mr-2 cursor-pointer hover:border-orange-600",
+							"border cursor-pointer hover:border-orange-600",
 							current === index && "border-orange-500"
 						)}
 					>
@@ -30,6 +31,8 @@ const ProductImages = ({ images }: { images: string[] }) => {
 							alt="image"
 							width={100}
 							height={100}
+							loading="lazy"
+							className="w-20 h-20 object-cover"
 						/>
 					</div>
 				))}

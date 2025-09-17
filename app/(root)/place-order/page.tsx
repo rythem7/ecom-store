@@ -17,7 +17,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatNumberToCurrency } from "@/lib/utils";
 import PlaceOrderForm from "./place-order-form";
 
 export const metadata: Metadata = {
@@ -108,7 +108,9 @@ const PlaceOrderPage = async () => {
 											</TableCell>
 											<TableCell className="text-right">
 												<span className="px-2">
-													${item.price}
+													{formatNumberToCurrency(
+														item.price
+													)}
 												</span>
 											</TableCell>
 										</TableRow>

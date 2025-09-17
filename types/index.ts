@@ -26,6 +26,7 @@ export type Product = z.infer<typeof insertProductSchema> & {
 	id: string; // Unique product ID from the database
 	rating: string; // Product rating (stored as string)
 	createdAt: Date; // Timestamp when product was created
+	numReviews: number; // Number of reviews for the product
 };
 
 export type Cart = z.infer<typeof insertCartSchema>;

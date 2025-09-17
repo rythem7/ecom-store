@@ -73,6 +73,6 @@ export const SORT_OPTIONS = [
 
 export const reviewDefaultValues = {
 	title: "",
-	comment: "",
+	description: "",
 	rating: 0,
 };

@@ -21,7 +21,6 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
-import { Resolver } from "react-hook-form";
 import { UploadButton } from "@/lib/uploadthing";
 import Image from "next/image";
 import { Card, CardContent } from "../ui/card";
@@ -41,7 +40,7 @@ const ProductForm = ({
 	const form = useForm<z.infer<typeof insertProductSchema>>({
 		resolver: zodResolver(
 			type === "Create" ? insertProductSchema : updateProductSchema
-		) as Resolver<z.infer<typeof insertProductSchema>>,
+		),
 		defaultValues:
 			product && type === "Update" ? product : productDefaultValues,
 	});

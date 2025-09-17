@@ -1,7 +1,6 @@
 import * as z from "zod";
 import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./constants";
-import { title } from "process";
 
 const currency = z
 	.string()
@@ -17,7 +16,7 @@ export const insertProductSchema = z.object({
 	category: z.string().min(3, "Category must be atleast 3 characters"),
 	brand: z.string().min(3, "Brand must be atleast 3 characters"),
 	description: z.string().min(3, "Description must be atleast 3 characters"),
-	stock: z.coerce.number(),
+	stock: z.coerce.number<number>(),
 	images: z.array(z.string()).min(1, "Product must have atleast one image"),
 	isFeatured: z.boolean().optional(),
 	banner: z.string().nullable(),
@@ -136,6 +135,10 @@ export const insertReviewSchema = z.object({
 	title: z.string().min(3, "Title is required"),
 	productId: z.string().min(3, "Product Id is required"),
 	userId: z.string().min(3, "User Id is required"),
-	rating: z.coerce.number().int().min(1, "Rating must be at least 1").max(5),
+	rating: z.coerce
+		.number<number>()
+		.int()
+		.min(1, "Rating must be at least 1")
+		.max(5),
 	description: z.string().min(3, "Description is required"),
 });

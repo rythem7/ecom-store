@@ -20,14 +20,25 @@ export function convertToPlainObject<T>(value: T): object {
 
 // Format number with decimal places
 export function formatNumberWithDecimal(num: number): string {
-	// const [int, decimal] = num.toString().split(".");
-	// return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `${int}.00`;
+	const [int, decimal] = num.toString().split(".");
+	return decimal ? `${int}.${decimal.padEnd(2, "0")}` : `${int}.00`;
 
-	return num.toLocaleString("en-US", {
-		style: "decimal",
+	// return num.toLocaleString("en-US", {
+	// 	style: "decimal",
+	// 	minimumFractionDigits: 2,
+	// 	maximumFractionDigits: 2,
+	// });
+}
+
+// Format number to INR currency
+export function formatNumberToCurrency(num: number | string): string {
+	const value = Number(num);
+	return new Intl.NumberFormat("en-IN", {
+		style: "currency",
+		currency: "INR",
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2,
-	});
+	}).format(value);
 }
 
 // Format errors
