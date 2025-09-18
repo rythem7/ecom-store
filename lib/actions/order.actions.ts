@@ -5,7 +5,7 @@ import { formatError, convertToPlainObject } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { getMyCart } from "./cart.actions";
-import { GetCart, PaymentResult } from "@/types";
+import { GetCart, Order, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { getUserById } from "./user.actions";
