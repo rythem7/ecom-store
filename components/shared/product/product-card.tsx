@@ -20,7 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
 						alt={product.name}
 						height={300}
 						width={300}
-						className="w-full h-auto object-contain"
+						className="object-cover h-auto w-auto rounded-t-lg"
 					/>
 				</Link>
 			</CardHeader>
@@ -31,11 +31,9 @@ const ProductCard = ({ product }: { product: Product }) => {
 				</Link>
 				<div className="flex flex-wrap justify-between items-center gap-4">
 					<Rating value={Number(product.rating)} />
-					{product.stock > 0 ? (
+					{product.stock > 0 ?
 						<ProductPrice value={Number(product.price)} />
-					) : (
-						<p className="text-destructive">Out Of Stock</p>
-					)}
+					:	<p className="text-destructive">Out Of Stock</p>}
 				</div>
 			</CardContent>
 			<CardFooter></CardFooter>

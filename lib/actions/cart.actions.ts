@@ -33,9 +33,8 @@ export async function addItemToCart(data: CartItem) {
 
 		// get the session and user ID
 		const session = await auth();
-		const userId = session?.user?.id
-			? (session.user.id as string)
-			: undefined;
+		const userId =
+			session?.user?.id ? (session.user.id as string) : undefined;
 
 		// Get cart
 		const cart = (await getMyCart()) as GetCart | null;
@@ -131,17 +130,16 @@ export async function getMyCart() {
 		where: userId ? { userId } : { sessionCartId },
 	});
 
-	if (!cart) return undefined;
-
-	// Convert decimals and return
-	return convertToPlainObject({
-		...cart,
-		items: cart.items as CartItem[],
-		itemsPrice: cart.itemsPrice.toString(),
-		totalPrice: cart.totalPrice.toString(),
-		shippingPrice: cart.shippingPrice.toString(),
-		taxPrice: cart.taxPrice.toString(),
-	});
+	if (cart) {
+		return convertToPlainObject({
+			...cart,
+			items: cart.items as CartItem[],
+			itemsPrice: cart.itemsPrice.toString(),
+			totalPrice: cart.totalPrice.toString(),
+			shippingPrice: cart.shippingPrice.toString(),
+			taxPrice: cart.taxPrice.toString(),
+		});
+	}
 }
 
 export async function removeItemFromCart(productId: string) {

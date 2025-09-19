@@ -11,11 +11,12 @@ import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { hashSync } from "bcrypt";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
-import { ShippingAddress } from "@/types";
+import { GetCart, ShippingAddress } from "@/types";
 import * as z from "zod";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "../generated/prisma";
+import { getMyCart } from "./cart.actions";
 
 // Define PaymentMethod
 type PaymentMethod = z.infer<typeof paymentMethodSchema>;
@@ -45,6 +46,12 @@ export async function signInWithCredentials(
 
 // Sign user out
 export async function signOutUser() {
+	const currentCart = (await getMyCart()) as GetCart | undefined;
+	if (currentCart) {
+		await prisma.cart.delete({
+			where: { id: currentCart.id },
+		});
+	}
 	await signOut();
 }
 
@@ -117,14 +124,14 @@ export async function getAllUsers({
 	query?: string;
 }) {
 	const queryFilter: Prisma.UserWhereInput =
-		query && query !== "all"
-			? {
-					name: {
-						contains: query,
-						mode: "insensitive",
-					} as Prisma.StringFilter,
-			  }
-			: {};
+		query && query !== "all" ?
+			{
+				name: {
+					contains: query,
+					mode: "insensitive",
+				} as Prisma.StringFilter,
+			}
+		:	{};
 
 	const data = await prisma.user.findMany({
 		where: { ...queryFilter },

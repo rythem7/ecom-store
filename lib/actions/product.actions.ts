@@ -39,7 +39,7 @@ export async function getProductById(id: string) {
 export async function getAllProducts({
 	query,
 	limit = PAGE_SIZE,
-	page,
+	page = 1,
 	category,
 	price,
 	sort,
@@ -55,14 +55,14 @@ export async function getAllProducts({
 }) {
 	// Query Filter
 	const queryFilter: Prisma.ProductWhereInput =
-		query && query !== "all"
-			? {
-					name: {
-						contains: query,
-						mode: "insensitive",
-					} as Prisma.StringFilter,
-			  }
-			: {};
+		query && query !== "all" ?
+			{
+				name: {
+					contains: query,
+					mode: "insensitive",
+				} as Prisma.StringFilter,
+			}
+		:	{};
 
 	// Category Filter
 	const categoryFilter: Prisma.ProductWhereInput =
@@ -70,33 +70,30 @@ export async function getAllProducts({
 
 	// Price Filter (example format: "min-max")
 	const priceFilter: Prisma.ProductWhereInput =
-		price && price !== "all"
-			? {
-					price: {
-						gte: Number(price.split("-")[0]),
-						lte: Number(price.split("-")[1]),
-					},
-			  }
-			: {};
+		price && price !== "all" ?
+			{
+				price: {
+					gte: Number(price.split("-")[0]),
+					lte: Number(price.split("-")[1]),
+				},
+			}
+		:	{};
 
 	// Rating Filter
 	const ratingFilter: Prisma.ProductWhereInput =
-		rating && rating !== "all"
-			? {
-					rating: {
-						gte: Number(rating),
-					},
-			  }
-			: {};
+		rating && rating !== "all" ?
+			{
+				rating: {
+					gte: Number(rating),
+				},
+			}
+		:	{};
 
 	const sortOptions: Prisma.ProductOrderByWithRelationInput =
-		sort === "lowest"
-			? { price: "asc" }
-			: sort === "highest"
-			? { price: "desc" }
-			: sort === "rating"
-			? { rating: "desc" }
-			: { createdAt: "desc" };
+		sort === "lowest" ? { price: "asc" }
+		: sort === "highest" ? { price: "desc" }
+		: sort === "rating" ? { rating: "desc" }
+		: { createdAt: "desc" };
 
 	const data = await prisma.product.findMany({
 		where: {
@@ -109,7 +106,14 @@ export async function getAllProducts({
 		take: limit,
 		orderBy: sortOptions,
 	});
-	const totalItems = await prisma.product.count();
+	const totalItems = await prisma.product.count({
+		where: {
+			...queryFilter,
+			...categoryFilter,
+			...priceFilter,
+			...ratingFilter,
+		},
+	});
 
 	return {
 		data: convertToPlainObject(data) as Product[],

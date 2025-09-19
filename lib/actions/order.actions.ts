@@ -5,7 +5,7 @@ import { formatError, convertToPlainObject } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { getMyCart } from "./cart.actions";
-import { GetCart, Order, PaymentResult } from "@/types";
+import { GetCart, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { getUserById } from "./user.actions";
@@ -352,16 +352,16 @@ export async function getAllOrders({
 	query?: string;
 }) {
 	const queryFilter: Prisma.OrderWhereInput =
-		query && query !== "all"
-			? {
-					user: {
-						name: {
-							contains: query,
-							mode: "insensitive",
-						} as Prisma.StringFilter,
-					},
-			  }
-			: {};
+		query && query !== "all" ?
+			{
+				user: {
+					name: {
+						contains: query,
+						mode: "insensitive",
+					} as Prisma.StringFilter,
+				},
+			}
+		:	{};
 
 	// Fetch orders with pagination
 	const data = await prisma.order.findMany({

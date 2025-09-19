@@ -81,6 +81,8 @@ const DealCountdown = () => {
 						alt="Deal of the Month"
 						width={300}
 						height={200}
+						className="w-auto h-full"
+						priority
 					/>
 				</div>
 			</section>
@@ -88,8 +90,8 @@ const DealCountdown = () => {
 	}
 
 	return (
-		<section className="grid grid-cols-1 md:grid-cols-2 my-20 ">
-			<div className="flex flex-col gap-2 justify-center">
+		<section className="grid grid-cols-1 md:grid-cols-3 my-20">
+			<div className="flex flex-col gap-2 justify-center text-center items-center md:col-span-2">
 				<h3 className="text-3xl font-bold">Deal of The Month</h3>
 				<p>
 					Get ready for a shopping experience like never before with

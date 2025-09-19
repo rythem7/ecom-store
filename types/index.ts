@@ -41,7 +41,6 @@ export type Order = z.infer<typeof insertOrderSchema> & {
 	paidAt: Date | null; // Timestamp when order was paid
 	isDelivered: boolean; // Delivery status of the order
 	deliveredAt: Date | null; // Timestamp when order was delivered
-	// transactionId: string | null; // Payment transaction
 	orderitems: OrderItem[]; // List of items in the order
 	user: { name: string; email: string }; // User who placed the order
 	paymentResult?: PaymentResult; // Payment result details

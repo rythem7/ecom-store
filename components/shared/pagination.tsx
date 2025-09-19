@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 type PaginationProps = {
 	page: number | string;
@@ -12,12 +13,20 @@ type PaginationProps = {
 const Pagination = ({ page, totalPages }: PaginationProps) => {
 	const pathname = usePathname();
 	const router = useRouter();
+	const searchParams = useSearchParams();
 
 	const handleClick = (btnType: string) => {
 		const currentPage =
 			btnType === "next" ? Number(page) + 1 : Number(page) - 1;
 
-		router.replace(`${pathname}?page=${currentPage}`);
+		const newSearchParams = new URLSearchParams(searchParams.toString());
+		newSearchParams.set("page", currentPage.toString());
+
+		const newPathname = `${pathname}?${newSearchParams.toString()}`;
+
+		router.push(newPathname);
+
+		// router.replace(`${pathname}?page=${currentPage}`);
 	};
 
 	return (

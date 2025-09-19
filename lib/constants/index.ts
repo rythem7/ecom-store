@@ -27,9 +27,10 @@ export const shippingAddressDefaultValues = {
 	country: "",
 };
 
-export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
-	? process.env.PAYMENT_METHODS.split(", ")
-	: ["PayPal", "Stripe", "CashOnDelivery"];
+export const PAYMENT_METHODS =
+	process.env.PAYMENT_METHODS ?
+		process.env.PAYMENT_METHODS.split(", ")
+	:	["PayPal", "Stripe", "CashOnDelivery"];
 
 export const DEFAULT_PAYMENT_METHOD =
 	process.env.DEFAULT_PAYMENT_METHOD || "PayPal";
@@ -51,16 +52,19 @@ export const productDefaultValues = {
 	numReviews: "0",
 };
 
-export const USER_ROLES = process.env.USER_ROLES
-	? process.env.USER_ROLES.split(", ")
-	: ["admin", "user"];
+export const USER_ROLES =
+	process.env.USER_ROLES ?
+		process.env.USER_ROLES.split(", ")
+	:	["admin", "user"];
+
+const priceSymbol = "₹";
 
 export const PRICE_RANGES = [
-	{ name: "$1 to $50", value: "1-50" },
-	{ name: "$51 to $100", value: "51-100" },
-	{ name: "$101 to $200", value: "101-200" },
-	{ name: "$201 to $500", value: "201-500" },
-	{ name: "$501 to $1000", value: "501-1000" },
+	{ name: `${priceSymbol}500 to ${priceSymbol}1000`, value: "500-1000" },
+	{ name: `${priceSymbol}1001 to ${priceSymbol}1500`, value: "1001-1500" },
+	{ name: `${priceSymbol}1501 to ${priceSymbol}2000`, value: "1501-2000" },
+	{ name: `${priceSymbol}2001 to ${priceSymbol}2500`, value: "2001-2500" },
+	{ name: `${priceSymbol}2501 to ${priceSymbol}4000`, value: "2501-4000" },
 ];
 
 export const RATINGS = [1, 2, 3, 4];

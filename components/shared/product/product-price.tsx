@@ -10,11 +10,13 @@ const ProductPrice = ({
 }) => {
 	const price = formatNumberToCurrency(value);
 	const [intValue, floatValue] = price.split(".");
+	const symbol = intValue.slice(0, 1);
+	const int = intValue.slice(1);
 
 	return (
 		<p className={cn("text-2xl", className)}>
-			{/* <span className="text-xs align-super">&#8377;</span> */}
-			{intValue}
+			<span className="text-xs align-super">{symbol}</span>
+			{int}
 			<span className="text-xs align-super">.{floatValue}</span>
 		</p>
 	);

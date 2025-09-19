@@ -49,7 +49,7 @@ const ProductDetailsPage = async ({
 							<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 								<ProductPrice
 									value={Number(product.price)}
-									className="rounded-full bg-green-100 text-green-700 px-5 py-2"
+									className="rounded-full bg-green-100 text-green-700 w-32 px-5 py-2"
 								/>
 							</div>
 						</div>
@@ -72,15 +72,14 @@ const ProductDetailsPage = async ({
 								</div>
 								<div className="mb-2 flex justify-between">
 									<div>Status</div>
-									{product.stock > 0 ? (
+									{product.stock > 0 ?
 										<Badge variant="outline">
 											In Stock
 										</Badge>
-									) : (
-										<Badge variant="destructive">
+									:	<Badge variant="destructive">
 											Out Of Stock
 										</Badge>
-									)}
+									}
 								</div>
 								{product.stock > 0 && (
 									<div className="flex justify-center items-center">

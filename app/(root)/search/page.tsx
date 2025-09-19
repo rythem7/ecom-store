@@ -85,7 +85,10 @@ const SearchPage = async (props: {
 		if (p) params.price = p;
 		if (r) params.rating = r;
 		if (pg) params.page = pg;
-		return `/search?` + new URLSearchParams(params).toString();
+		const newPage = pg ? pg : "1";
+		if (params.page !== newPage) params.page = newPage;
+		const newParams = new URLSearchParams(params).toString();
+		return `/search?${newParams}`;
 	};
 
 	const products = await getAllProducts({
@@ -110,9 +113,9 @@ const SearchPage = async (props: {
 							<Link
 								href={getFilterUrl({ c: "all" })}
 								className={
-									category === "all" || category === ""
-										? "font-bold"
-										: ""
+									category === "all" || category === "" ?
+										"font-bold"
+									:	""
 								}
 							>
 								Any
@@ -123,9 +126,9 @@ const SearchPage = async (props: {
 								<Link
 									href={getFilterUrl({ c: x.category })}
 									className={
-										x.category === category
-											? "font-bold"
-											: ""
+										x.category === category ?
+											"font-bold"
+										:	""
 									}
 								>
 									{x.category}
@@ -178,9 +181,9 @@ const SearchPage = async (props: {
 								<Link
 									href={getFilterUrl({ r: r.toString() })}
 									className={
-										r.toString() === rating
-											? "font-bold"
-											: ""
+										r.toString() === rating ?
+											"font-bold"
+										:	""
 									}
 								>
 									{r} Star{r > 1 ? "s" : ""} &amp; Up
@@ -204,14 +207,16 @@ const SearchPage = async (props: {
 							rating !== "" &&
 							'Rating: "' + rating + ' & up"'}
 						&nbsp;
-						{(q !== "all" && q !== "") ||
-						(category !== "all" && category !== "") ||
-						(price !== "all" && price !== "") ||
-						(rating !== "all" && rating !== "") ? (
+						{(
+							(q !== "all" && q !== "") ||
+							(category !== "all" && category !== "") ||
+							(price !== "all" && price !== "") ||
+							(rating !== "all" && rating !== "")
+						) ?
 							<Button variant="link" asChild>
 								<Link href="/search">Clear Filters</Link>
 							</Button>
-						) : null}
+						:	null}
 					</div>
 					<div className="max-w-md text-2xs mb-2 flex items-center gap-4">
 						<div className="font-bold">Sort by:</div>
@@ -230,7 +235,7 @@ const SearchPage = async (props: {
 						</div>
 					</div>
 				</div>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+				<div className="grid grid-cols-2 gap-4 md:grid-cols-3">
 					{products.data.length === 0 && <div>No Products Found</div>}
 					{products.data.map((product) => (
 						<ProductCard key={product.id} product={product} />
